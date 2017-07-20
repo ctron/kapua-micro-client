@@ -14,8 +14,8 @@ package de.dentrassi.kapua.micro.client.test;
 import de.dentrassi.kapua.micro.client.Handler;
 import de.dentrassi.kapua.micro.client.KuraProtobufFormat;
 import de.dentrassi.kapua.micro.client.Nothing;
+import de.dentrassi.kapua.micro.client.MqttTransportOptions;
 import de.dentrassi.kapua.micro.client.PahoTransport;
-import de.dentrassi.kapua.micro.client.PahoTransport.Options;
 import de.dentrassi.kapua.micro.client.Payload;
 import de.dentrassi.kapua.micro.client.Result;
 import de.dentrassi.kapua.micro.client.ResultHandler;
@@ -25,9 +25,9 @@ public class TestTransport {
 
     public static void main(final String[] args) throws Exception {
 
-        final Options options = new Options("tcp://iot.eclipse.org:1883", "foo-bar");
+        final MqttTransportOptions options = new MqttTransportOptions("tcp://iot.eclipse.org:1883", "foo-bar");
 
-        try (final PahoTransport transport = new PahoTransport(options, new KuraProtobufFormat(), new TransportListener() {
+        try (final PahoTransport transport = PahoTransport.creator(options, KuraProtobufFormat.defaultInstance()).createTransport(new TransportListener() {
 
             @Override
             public void disconnected() {

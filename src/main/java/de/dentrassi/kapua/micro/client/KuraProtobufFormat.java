@@ -23,6 +23,15 @@ import com.google.protobuf.ByteString;
 
 public class KuraProtobufFormat implements PayloadFormat {
 
+    private static final PayloadFormat INSTANCE = new KuraProtobufFormat();
+
+    public static PayloadFormat defaultInstance() {
+        return INSTANCE;
+    }
+
+    private KuraProtobufFormat() {
+    }
+
     @Override
     public byte[] encode(final Payload payload) {
         if (payload == null) {

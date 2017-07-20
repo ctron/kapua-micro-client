@@ -18,17 +18,32 @@ import java.util.Objects;
 
 public class MicroClient implements AutoCloseable {
 
-    private final Transport transport;
     private final Namespace namespace;
+    private final BirthCertificateProvider[] birthCertificateProviders;
+    private final Transport transport;
 
     private final Map<String, MicroApplication> applications = new HashMap<>();
+    private final TransportListener listener = new TransportListener() {
 
-    public MicroClient(final Transport transport, final Namespace namespace) {
-        Objects.requireNonNull(transport);
+        @Override
+        public void connected() {
+            handleConnnected();
+        }
+
+        @Override
+        public void disconnected() {
+            handleDisconnected();
+        }
+
+    };
+
+    public MicroClient(final Namespace namespace, final BirthCertificateProvider[] birthCertificateProviders, final TransportCreator<? extends Transport> transportCreator) throws Exception {
         Objects.requireNonNull(namespace);
+        Objects.requireNonNull(transportCreator);
 
-        this.transport = transport;
         this.namespace = namespace;
+        this.birthCertificateProviders = birthCertificateProviders;
+        this.transport = transportCreator.createTransport(this.listener);
     }
 
     public synchronized MicroApplication createApplication(final String name) {
@@ -42,7 +57,7 @@ public class MicroClient implements AutoCloseable {
 
         this.applications.put(name, result);
 
-        // FIXME: send birth
+        sendBirthCertificate();
 
         return result;
     }
@@ -56,7 +71,61 @@ public class MicroClient implements AutoCloseable {
     }
 
     @Override
-    public void close() {
+    public void close() throws Exception {
+        if (this.transport != null) {
+            this.transport.close();
+        }
+    }
+
+    protected void handleConnnected() {
+        sendBirthCertificate();
+    }
+
+    protected void handleDisconnected() {
+    }
+
+    protected void sendBirthCertificate() {
+
+        // get topic
+
+        final String topic = this.namespace.birth();
+        if (topic == null) {
+            return;
+        }
+
+        final Payload.Builder payload = new Payload.Builder();
+
+        // gather payload data
+
+        if (this.birthCertificateProviders != null) {
+            for (final BirthCertificateProvider provider : this.birthCertificateProviders) {
+                if (provider == null) {
+                    continue;
+                }
+                provider.provide(payload);
+            }
+        }
+
+        // set the application IDs
+
+        {
+            final StringBuilder sb = new StringBuilder();
+            boolean first = true;
+            for (final String appId : this.applications.keySet()) {
+                if (!first) {
+                    sb.append(',');
+                } else {
+                    first = false;
+                }
+                sb.append(appId);
+            }
+
+            payload.metric("application_ids", sb.toString());
+        }
+
+        // send out
+
+        this.transport.publish(topic, payload.build());
     }
 
     synchronized void closeApplication(final String name, final Collection<Topic> topics) {

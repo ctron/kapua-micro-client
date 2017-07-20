@@ -11,9 +11,7 @@
  *******************************************************************************/
 package de.dentrassi.kapua.micro.client;
 
-public interface Namespace {
+public interface TransportCreator<T extends Transport> {
 
-    public String data(String applicationName, Topic topic);
-
-    public String birth();
+    public T createTransport(TransportListener listener) throws Exception;
 }

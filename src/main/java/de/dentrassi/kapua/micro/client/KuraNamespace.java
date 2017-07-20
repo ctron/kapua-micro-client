@@ -11,14 +11,20 @@
  *******************************************************************************/
 package de.dentrassi.kapua.micro.client;
 
+import java.util.Objects;
+
 public class KuraNamespace implements Namespace {
 
     private final String accountName;
     private final String clientId;
 
-    public KuraNamespace(final String accountName, final String clientId) {
+    public KuraNamespace(final String accountName, final MqttTransportOptions options) {
+        Objects.requireNonNull(accountName);
+        Objects.requireNonNull(options);
+        Objects.requireNonNull(options.getClientId());
+
         this.accountName = accountName;
-        this.clientId = clientId;
+        this.clientId = options.getClientId();
     }
 
     @Override
@@ -28,6 +34,14 @@ public class KuraNamespace implements Namespace {
         sb.append(this.clientId).append('/');
         sb.append(applicationName).append('/');
         sb.append(topic);
+        return sb.toString();
+    }
+
+    @Override
+    public String birth() {
+        final StringBuilder sb = new StringBuilder("$EDC/");
+        sb.append(this.accountName).append('/');
+        sb.append(this.clientId).append("/MQTT/BIRTH");
         return sb.toString();
     }
 

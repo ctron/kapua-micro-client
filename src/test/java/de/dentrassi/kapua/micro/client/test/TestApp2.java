@@ -11,13 +11,14 @@
  *******************************************************************************/
 package de.dentrassi.kapua.micro.client.test;
 
+import de.dentrassi.kapua.micro.client.BirthCertificateProvider;
 import de.dentrassi.kapua.micro.client.Handler;
 import de.dentrassi.kapua.micro.client.KuraNamespace;
 import de.dentrassi.kapua.micro.client.KuraProtobufFormat;
 import de.dentrassi.kapua.micro.client.MicroApplication;
 import de.dentrassi.kapua.micro.client.MicroClient;
+import de.dentrassi.kapua.micro.client.MqttTransportOptions;
 import de.dentrassi.kapua.micro.client.PahoTransport;
-import de.dentrassi.kapua.micro.client.PahoTransport.Options;
 import de.dentrassi.kapua.micro.client.Payload;
 import de.dentrassi.kapua.micro.client.Topic;
 
@@ -25,42 +26,43 @@ public class TestApp2 {
 
     public static void main(final String[] args) throws Exception {
 
-        final Options options = new Options("tcp://iot.eclipse.org:1883", "foo-bar");
+        final MqttTransportOptions options = new MqttTransportOptions("tcp://iot.eclipse.org:1883", "foo-bar");
 
-        try (final PahoTransport transport = new PahoTransport(options, new KuraProtobufFormat(), null)) {
-            try (final MicroClient client = new MicroClient(transport, new KuraNamespace("kapua-sys", "micro-1"))) {
+        final BirthCertificateProvider[] providers = new BirthCertificateProvider[] {};
 
-                try (final MicroApplication app = client.createApplication("app-1")) {
+        try (final MicroClient client = new MicroClient(new KuraNamespace("kapua-sys", options),
+                providers,
+                PahoTransport.creator(options, KuraProtobufFormat.defaultInstance()))) {
 
-                    System.out.println("Application registered");
+            try (final MicroApplication app = client.createApplication("app-1")) {
 
-                    final Topic t1 = Topic.of("data", "1");
+                System.out.println("Application registered");
 
-                    app.subscribe(t1, new Handler() {
+                final Topic t1 = Topic.of("data", "1");
 
-                        @Override
-                        public void handleMessage(final Payload payload) {
-                            System.out.println("T1: " + payload);
-                        }
-                    }).get();
+                app.subscribe(t1, new Handler() {
 
-                    System.out.println("Subscribed");
-
-                    for (int i = 0; i < 10; i++) {
-                        app.publish(t1, new Payload.Builder()
-                                .metric("foo", "bar")
-                                .metric("count", i)
-                                .build());
-                        Thread.sleep(1_000);
+                    @Override
+                    public void handleMessage(final Payload payload) {
+                        System.out.println("T1: " + payload);
                     }
+                }).get();
 
-                    Thread.sleep(10_000);
+                System.out.println("Subscribed");
 
-                } // app
+                for (int i = 0; i < 10; i++) {
+                    app.publish(t1, new Payload.Builder()
+                            .metric("foo", "bar")
+                            .metric("count", i)
+                            .build());
+                    Thread.sleep(1_000);
+                }
 
-            } // client
+                Thread.sleep(10_000);
 
-        } // transport
+            } // app
+
+        } // client
 
         System.out.println("Exiting...");
     }

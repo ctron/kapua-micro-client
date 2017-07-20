@@ -13,7 +13,6 @@ package de.dentrassi.kapua.micro.client.test;
 
 import de.dentrassi.kapua.micro.client.BirthCertificateProvider;
 import de.dentrassi.kapua.micro.client.BirthCertificateProviders;
-import de.dentrassi.kapua.micro.client.Handler;
 import de.dentrassi.kapua.micro.client.KuraNamespace;
 import de.dentrassi.kapua.micro.client.KuraProtobufFormat;
 import de.dentrassi.kapua.micro.client.MicroApplication;
@@ -23,11 +22,11 @@ import de.dentrassi.kapua.micro.client.PahoTransport;
 import de.dentrassi.kapua.micro.client.Payload;
 import de.dentrassi.kapua.micro.client.Topic;
 
-public class TestApp1 {
+public class TestApp3 {
 
     public static void main(final String[] args) throws Exception {
 
-        final MqttTransportOptions options = new MqttTransportOptions("tcp://iot.eclipse.org:1883", "foo-bar");
+        final MqttTransportOptions options = new MqttTransportOptions("tcp://localhost:1883", "foo-bar", "kapua-broker", "kapua-password");
 
         final BirthCertificateProvider[] providers = new BirthCertificateProvider[] {
                 BirthCertificateProviders.jvm(),
@@ -43,17 +42,15 @@ public class TestApp1 {
 
                 System.out.println("Application registered");
 
-                final Topic t1 = Topic.of("clicked");
+                final Topic t1 = Topic.of("dummy");
 
-                app.subscribe(t1, new Handler() {
-
-                    @Override
-                    public void handleMessage(final Payload payload) {
-                        System.out.println("T1: " + payload);
-                    }
-                }).get();
-
-                Thread.sleep(10_000);
+                for (int i = 0; i < 10; i++) {
+                    app.publish(t1, new Payload.Builder()
+                            .metric("foo", "bar")
+                            .metric("count", i)
+                            .build());
+                    Thread.sleep(1_000);
+                }
 
             } // app
 

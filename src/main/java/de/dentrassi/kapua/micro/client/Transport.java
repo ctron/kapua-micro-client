@@ -11,7 +11,7 @@
  *******************************************************************************/
 package de.dentrassi.kapua.micro.client;
 
-public interface Transport {
+public interface Transport extends AutoCloseable {
 
     public Future<Nothing> publish(String topic, Payload payload);
 

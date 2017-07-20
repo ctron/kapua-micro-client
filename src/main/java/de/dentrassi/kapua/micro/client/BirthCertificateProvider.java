@@ -11,9 +11,7 @@
  *******************************************************************************/
 package de.dentrassi.kapua.micro.client;
 
-public interface Namespace {
+public interface BirthCertificateProvider {
 
-    public String data(String applicationName, Topic topic);
-
-    public String birth();
+    public void provide(Payload.Builder payload);
 }

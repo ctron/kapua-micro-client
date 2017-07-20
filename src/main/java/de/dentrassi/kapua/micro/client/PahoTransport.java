@@ -27,69 +27,24 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 public class PahoTransport implements Transport, AutoCloseable {
 
-    public static class Options {
+    public static TransportCreator<PahoTransport> creator(final MqttTransportOptions options, final PayloadFormat format, final Supplier<MqttClientPersistence> persistenceProvider) {
+        return new TransportCreator<PahoTransport>() {
 
-        private String brokerUri;
-        private String clientId;
-        private String username;
-        private char[] password;
+            @Override
+            public PahoTransport createTransport(final TransportListener listener) throws Exception {
+                return new PahoTransport(options, format, listener, persistenceProvider);
+            }
+        };
+    }
 
-        private boolean cleanSession = false;
+    public static TransportCreator<PahoTransport> creator(final MqttTransportOptions options, final PayloadFormat format) {
+        return new TransportCreator<PahoTransport>() {
 
-        public Options(final String brokerUri, final String clientId) {
-            this(brokerUri, clientId, null, null);
-        }
-
-        public Options(final String brokerUri, final String clientId, final String username, final char[] password) {
-            this.brokerUri = brokerUri;
-            this.clientId = clientId;
-            this.username = username;
-            this.password = password;
-        }
-
-        public void setBrokerUri(final String brokerUri) {
-            this.brokerUri = brokerUri;
-        }
-
-        public String getBrokerUri() {
-            return this.brokerUri;
-        }
-
-        public void setClientId(final String clientId) {
-            this.clientId = clientId;
-        }
-
-        public String getClientId() {
-            return this.clientId;
-        }
-
-        public void setUsername(final String username) {
-            this.username = username;
-        }
-
-        public String getUsername() {
-            return this.username;
-        }
-
-        public void setPassword(final char[] password) {
-            this.password = password;
-        }
-
-        public void setPassword(final String password) {
-            this.password = password != null ? password.toCharArray() : null;
-        }
-
-        public char[] getPassword() {
-            return this.password;
-        }
-
-        public void setCleanSession(final boolean cleanSession) {
-            this.cleanSession = cleanSession;
-        }
-
-        public boolean isCleanSession() {
-            return this.cleanSession;
-        }
+            @Override
+            public PahoTransport createTransport(final TransportListener listener) throws Exception {
+                return new PahoTransport(options, format, listener, null);
+            }
+        };
     }
 
     private final PayloadFormat format;
@@ -111,11 +66,7 @@ public class PahoTransport implements Transport, AutoCloseable {
     private boolean resubscribe;
     private final TransportListener listener;
 
-    public PahoTransport(final Options options, final PayloadFormat format, final TransportListener listener) throws Exception {
-        this(options, format, listener, null);
-    }
-
-    public PahoTransport(final Options options, final PayloadFormat format, final TransportListener listener, final Supplier<MqttClientPersistence> persistenceProvider) throws Exception {
+    private PahoTransport(final MqttTransportOptions options, final PayloadFormat format, final TransportListener listener, final Supplier<MqttClientPersistence> persistenceProvider) throws Exception {
         this.options = convertOptions(options);
 
         this.format = format;
@@ -399,7 +350,7 @@ public class PahoTransport implements Transport, AutoCloseable {
         this.runner.join();
     }
 
-    private static MqttConnectOptions convertOptions(final Options options) {
+    private static MqttConnectOptions convertOptions(final MqttTransportOptions options) {
         final MqttConnectOptions result = new MqttConnectOptions();
 
         result.setUserName(options.getUsername());

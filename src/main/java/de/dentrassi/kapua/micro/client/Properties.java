@@ -11,9 +11,17 @@
  *******************************************************************************/
 package de.dentrassi.kapua.micro.client;
 
-public interface Namespace {
+import java.util.Map;
 
-    public String data(String applicationName, Topic topic);
+public final class Properties {
 
-    public String birth();
+    private Properties() {
+    }
+
+    public static void addWhenPresent(final Map<String, Object> values, final String propertyName, final String kuraAlias) {
+        final String value = System.getProperty(propertyName);
+        if (value != null) {
+            values.put(kuraAlias, value);
+        }
+    }
 }

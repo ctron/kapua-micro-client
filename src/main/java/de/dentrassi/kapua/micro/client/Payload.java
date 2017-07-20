@@ -53,9 +53,32 @@ public class Payload {
             return this;
         }
 
+        public Builder metrics(final Map<String, Object> values) {
+            if (values != null) {
+                for (final Object value : values.values()) {
+                    if (value == null) {
+                        continue;
+                    }
+                    if (value instanceof String ||
+                            value instanceof Double ||
+                            value instanceof Float ||
+                            value instanceof Boolean ||
+                            value instanceof Long ||
+                            value instanceof Integer ||
+                            value instanceof byte[]) {
+                        continue;
+                    }
+                    throw new IllegalArgumentException("Value type unsupported: " + value.getClass());
+                }
+                this.metrics.putAll(values);
+            }
+            return this;
+        }
+
         public Payload build() {
             return new Payload(this.timestamp == 0 ? System.currentTimeMillis() : this.timestamp, this.metrics);
         }
+
     }
 
     private final long timestamp;
