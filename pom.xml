@@ -5,7 +5,7 @@
 
 	<groupId>de.dentrassi.kapua</groupId>
 	<artifactId>kapua-micro-client</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.2</version>
 	<packaging>bundle</packaging>
 
 	<name>Kapua Micro Client</name>
@@ -37,7 +37,7 @@
 		<url>https://github.com/ctron/kapua-micro-client</url>
 		<connection>scm:git:git://github.com/ctron/kapua-micro-client.git</connection>
 		<developerConnection>scm:git:git@github.com:ctron/kapua-micro-client.git</developerConnection>
-		<tag>HEAD</tag>
+		<tag>kapua-micro-client-0.0.2</tag>
 	</scm>
 
 	<issueManagement>
