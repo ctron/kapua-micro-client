@@ -25,6 +25,10 @@ public class KuraProtobufFormat implements PayloadFormat {
 
     @Override
     public byte[] encode(final Payload payload) {
+        if (payload == null) {
+            return null;
+        }
+
         final Builder builder = KuraPayload.newBuilder();
 
         builder.setTimestamp(payload.getTimestamp());
@@ -70,6 +74,10 @@ public class KuraProtobufFormat implements PayloadFormat {
 
     @Override
     public Payload decode(final byte[] buffer) throws Exception {
+        if (buffer == null) {
+            return null;
+        }
+
         final KuraPayload payload = KuraPayload.parseFrom(buffer);
 
         final Map<String, Object> metrics = new HashMap<>(payload.getMetricCount());

@@ -13,6 +13,7 @@ package de.dentrassi.kapua.micro.client.test;
 
 import de.dentrassi.kapua.micro.client.Handler;
 import de.dentrassi.kapua.micro.client.KuraProtobufFormat;
+import de.dentrassi.kapua.micro.client.Nothing;
 import de.dentrassi.kapua.micro.client.PahoTransport;
 import de.dentrassi.kapua.micro.client.PahoTransport.Options;
 import de.dentrassi.kapua.micro.client.Payload;
@@ -49,10 +50,10 @@ public class TestTransport {
                 public void handleMessage(final Payload payload) {
                     System.out.println("Got mail: " + payload);
                 }
-            }).handle(new ResultHandler<Void>() {
+            }).handle(new ResultHandler<Nothing>() {
 
                 @Override
-                public void completed(final Result<Void> result) {
+                public void completed(final Result<Nothing> result) {
                     System.out.println("Subscribe completed: " + result);
                 }
             });
@@ -63,18 +64,18 @@ public class TestTransport {
                 public void handleMessage(final Payload payload) {
                     System.out.println("Got mail 2: " + payload);
                 }
-            }).handle(new ResultHandler<Void>() {
+            }).handle(new ResultHandler<Nothing>() {
 
                 @Override
-                public void completed(final Result<Void> result) {
+                public void completed(final Result<Nothing> result) {
                     System.out.println("Subscribe completed: " + result);
                 }
             });
 
-            transport.publish("my/foo/bar", new Payload.Builder().build()).handle(new ResultHandler<Void>() {
+            transport.publish("my/foo/bar", new Payload.Builder().build()).handle(new ResultHandler<Nothing>() {
 
                 @Override
-                public void completed(final Result<Void> result) {
+                public void completed(final Result<Nothing> result) {
                     System.out.println("Publish completed: " + result);
 
                 }
@@ -82,10 +83,10 @@ public class TestTransport {
 
             int i = 10;
             while (i > 0) {
-                transport.publish("my/foo/bar/2", new Payload.Builder().build()).handle(new ResultHandler<Void>() {
+                transport.publish("my/foo/bar/2", new Payload.Builder().build()).handle(new ResultHandler<Nothing>() {
 
                     @Override
-                    public void completed(final Result<Void> result) {
+                    public void completed(final Result<Nothing> result) {
                         System.out.println("Publish completed: " + result);
 
                     }
@@ -99,10 +100,10 @@ public class TestTransport {
 
             transport.unsubscribe("my/foo/bar/2");
 
-            transport.publish("my/foo/bar/2", new Payload.Builder().build()).handle(new ResultHandler<Void>() {
+            transport.publish("my/foo/bar/2", new Payload.Builder().build()).handle(new ResultHandler<Nothing>() {
 
                 @Override
-                public void completed(final Result<Void> result) {
+                public void completed(final Result<Nothing> result) {
                     System.out.println("Publish completed: " + result);
 
                 }

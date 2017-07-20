@@ -11,11 +11,7 @@
  *******************************************************************************/
 package de.dentrassi.kapua.micro.client;
 
-public interface Transport {
+public interface Supplier<T> {
 
-    public Future<Nothing> publish(String topic, Payload payload);
-
-    public Future<Nothing> subscribe(String topic, Handler handler);
-
-    public Future<Nothing> unsubscribe(String topic);
+    public T get();
 }

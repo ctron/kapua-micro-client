@@ -19,18 +19,22 @@ import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttClientPersistence;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 public class PahoTransport implements Transport, AutoCloseable {
 
     public static class Options {
 
-        private final String brokerUri;
-        private final String clientId;
-        private final String username;
-        private final char[] password;
+        private String brokerUri;
+        private String clientId;
+        private String username;
+        private char[] password;
+
+        private boolean cleanSession = false;
 
         public Options(final String brokerUri, final String clientId) {
             this(brokerUri, clientId, null, null);
@@ -43,20 +47,48 @@ public class PahoTransport implements Transport, AutoCloseable {
             this.password = password;
         }
 
+        public void setBrokerUri(final String brokerUri) {
+            this.brokerUri = brokerUri;
+        }
+
         public String getBrokerUri() {
             return this.brokerUri;
+        }
+
+        public void setClientId(final String clientId) {
+            this.clientId = clientId;
         }
 
         public String getClientId() {
             return this.clientId;
         }
 
+        public void setUsername(final String username) {
+            this.username = username;
+        }
+
         public String getUsername() {
             return this.username;
         }
 
+        public void setPassword(final char[] password) {
+            this.password = password;
+        }
+
+        public void setPassword(final String password) {
+            this.password = password != null ? password.toCharArray() : null;
+        }
+
         public char[] getPassword() {
             return this.password;
+        }
+
+        public void setCleanSession(final boolean cleanSession) {
+            this.cleanSession = cleanSession;
+        }
+
+        public boolean isCleanSession() {
+            return this.cleanSession;
         }
     }
 
@@ -64,8 +96,8 @@ public class PahoTransport implements Transport, AutoCloseable {
     private final MqttConnectOptions options;
     private final MqttAsyncClient client;
     private final Map<String, Handler> subscriptions = new HashMap<>();
-    private final Map<String, FutureTask<Void>> pendingSubscribes = new HashMap<>();
-    private final Map<String, FutureTask<Void>> pendingUnsubscribes = new HashMap<>();
+    private final Map<String, FutureTask<Nothing>> pendingSubscribes = new HashMap<>();
+    private final Map<String, FutureTask<Nothing>> pendingUnsubscribes = new HashMap<>();
 
     private final Thread runner = new Thread(new Runnable() {
 
@@ -80,12 +112,21 @@ public class PahoTransport implements Transport, AutoCloseable {
     private final TransportListener listener;
 
     public PahoTransport(final Options options, final PayloadFormat format, final TransportListener listener) throws Exception {
+        this(options, format, listener, null);
+    }
+
+    public PahoTransport(final Options options, final PayloadFormat format, final TransportListener listener, final Supplier<MqttClientPersistence> persistenceProvider) throws Exception {
         this.options = convertOptions(options);
 
         this.format = format;
         this.listener = listener;
 
-        this.client = new MqttAsyncClient(options.getBrokerUri(), options.getClientId());
+        MqttClientPersistence persistence = persistenceProvider != null ? persistenceProvider.get() : null;
+        if (persistence == null) {
+            persistence = new MemoryPersistence();
+        }
+
+        this.client = new MqttAsyncClient(options.getBrokerUri(), options.getClientId(), persistence);
         this.client.setCallback(new MqttCallback() {
 
             @Override
@@ -227,7 +268,7 @@ public class PahoTransport implements Transport, AutoCloseable {
                     }
 
                     if (!this.pendingSubscribes.isEmpty()) {
-                        for (final Map.Entry<String, FutureTask<Void>> entry : this.pendingSubscribes.entrySet()) {
+                        for (final Map.Entry<String, FutureTask<Nothing>> entry : this.pendingSubscribes.entrySet()) {
                             try {
                                 this.client.subscribe(entry.getKey(), 0, null, reportTo(entry.getValue()));
                             } catch (final MqttException e) {
@@ -238,7 +279,7 @@ public class PahoTransport implements Transport, AutoCloseable {
                     }
 
                     if (!this.pendingUnsubscribes.isEmpty()) {
-                        for (final Map.Entry<String, FutureTask<Void>> entry : this.pendingUnsubscribes.entrySet()) {
+                        for (final Map.Entry<String, FutureTask<Nothing>> entry : this.pendingUnsubscribes.entrySet()) {
                             try {
                                 this.client.unsubscribe(entry.getKey(), null, reportTo(entry.getValue()));
                             } catch (final MqttException e) {
@@ -266,8 +307,8 @@ public class PahoTransport implements Transport, AutoCloseable {
         }
     }
 
-    private static void flushTasks(final Map<String, FutureTask<Void>> tasks) {
-        for (final FutureTask<Void> task : tasks.values()) {
+    private static void flushTasks(final Map<String, FutureTask<Nothing>> tasks) {
+        for (final FutureTask<Nothing> task : tasks.values()) {
             try {
                 task.completed(null);
             } catch (final Exception e) {
@@ -282,8 +323,8 @@ public class PahoTransport implements Transport, AutoCloseable {
     }
 
     @Override
-    public Future<Void> publish(final String topic, final Payload payload) {
-        final FutureTask<Void> task = new FutureTask<>();
+    public Future<Nothing> publish(final String topic, final Payload payload) {
+        final FutureTask<Nothing> task = new FutureTask<>();
 
         try {
             this.client.publish(topic, this.format.encode(payload), 1, false, null, reportTo(task));
@@ -295,10 +336,10 @@ public class PahoTransport implements Transport, AutoCloseable {
     }
 
     @Override
-    public Future<Void> subscribe(final String topic, final Handler handler) {
-        final FutureTask<Void> task = new FutureTask<>();
+    public Future<Nothing> subscribe(final String topic, final Handler handler) {
+        final FutureTask<Nothing> task = new FutureTask<>();
 
-        final FutureTask<Void> oldTask;
+        final FutureTask<Nothing> oldTask;
 
         synchronized (this) {
             if (this.subscriptions.put(topic, handler) != null) {
@@ -321,10 +362,10 @@ public class PahoTransport implements Transport, AutoCloseable {
     }
 
     @Override
-    public Future<Void> unsubscribe(final String topic) {
-        final FutureTask<Void> task = new FutureTask<>();
+    public Future<Nothing> unsubscribe(final String topic) {
+        final FutureTask<Nothing> task = new FutureTask<>();
 
-        final FutureTask<Void> oldTask;
+        final FutureTask<Nothing> oldTask;
 
         synchronized (this) {
             if (this.subscriptions.remove(topic) == null) {
@@ -364,10 +405,12 @@ public class PahoTransport implements Transport, AutoCloseable {
         result.setUserName(options.getUsername());
         result.setPassword(options.getPassword());
 
+        result.setCleanSession(options.isCleanSession());
+
         return result;
     }
 
-    private static IMqttActionListener reportTo(final FutureTask<Void> task) {
+    private static IMqttActionListener reportTo(final FutureTask<Nothing> task) {
         return new IMqttActionListener() {
 
             @Override

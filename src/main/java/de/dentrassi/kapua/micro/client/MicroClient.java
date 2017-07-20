@@ -14,6 +14,7 @@ package de.dentrassi.kapua.micro.client;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class MicroClient implements AutoCloseable {
 
@@ -23,11 +24,16 @@ public class MicroClient implements AutoCloseable {
     private final Map<String, MicroApplication> applications = new HashMap<>();
 
     public MicroClient(final Transport transport, final Namespace namespace) {
+        Objects.requireNonNull(transport);
+        Objects.requireNonNull(namespace);
+
         this.transport = transport;
         this.namespace = namespace;
     }
 
     public synchronized MicroApplication createApplication(final String name) {
+        Objects.requireNonNull(name);
+
         if (this.applications.containsKey(name)) {
             throw new IllegalStateException("Application already exists:" + name);
         }
@@ -41,11 +47,11 @@ public class MicroClient implements AutoCloseable {
         return result;
     }
 
-    Future<Void> publish(final String applicationName, final Topic topic, final Payload payload) {
+    Future<Nothing> publish(final String applicationName, final Topic topic, final Payload payload) {
         return this.transport.publish(this.namespace.data(applicationName, topic), payload);
     }
 
-    Future<Void> subscribe(final String applicationName, final Topic topic, final Handler handler) {
+    Future<Nothing> subscribe(final String applicationName, final Topic topic, final Handler handler) {
         return this.transport.subscribe(this.namespace.data(applicationName, topic), handler);
     }
 

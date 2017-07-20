@@ -74,8 +74,14 @@ public class Topic {
     }
 
     private static void checkSegment(final String segment) {
-        if (segment.matches(".*[\\#\\+\\/]+.*")) {
-            throw new IllegalArgumentException("Topic segments must not contain special characters (#, + or /)");
+        for (int i = 0; i < segment.length(); i++) {
+            final char c = segment.charAt(i);
+            switch (c) {
+            case '#': //$FALL-THROUGH$
+            case '+': //$FALL-THROUGH$
+            case '/':
+                throw new IllegalArgumentException("Invalid character in topic segment");
+            }
         }
     }
 }

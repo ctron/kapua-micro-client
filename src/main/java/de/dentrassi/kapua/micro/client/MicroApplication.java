@@ -25,15 +25,15 @@ public class MicroApplication implements AutoCloseable {
         this.name = name;
     }
 
-    public Future<Void> publish(final Topic topic, final Payload payload) {
+    public Future<Nothing> publish(final Topic topic, final Payload payload) {
         return this.client.publish(this.name, topic, payload);
     }
 
-    public Future<Void> subscribe(final Topic topic, final Handler handler) {
+    public Future<Nothing> subscribe(final Topic topic, final Handler handler) {
         if (this.subscriptions.add(topic)) {
             return this.client.subscribe(this.name, topic, handler);
         } else {
-            return new FutureTask<Void>().completed(null);
+            return new FutureTask<Nothing>().completed(null);
         }
     }
 
