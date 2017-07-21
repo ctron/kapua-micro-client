@@ -65,6 +65,16 @@ public final class BirthCertificateProviders {
     private BirthCertificateProviders() {
     }
 
+    public static BirthCertificateProvider values(final Map<String, Object> values) {
+        return new BirthCertificateProvider() {
+
+            @Override
+            public void provide(final Builder payload) {
+                payload.metrics(values);
+            }
+        };
+    }
+
     public static BirthCertificateProvider jvm() {
         return JVM;
     }
