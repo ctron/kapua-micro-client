@@ -8,7 +8,7 @@
 //
 package kuradatatypes;
 
-option java_package         = "org.eclipse.kapua.gateway.micro.client.kura.payload";
+option java_package         = "de.dentrassi.kapua.micro.client.internal.kura.payload";
 option java_outer_classname = "KuraPayloadProto";
 
 option optimize_for = LITE_RUNTIME;

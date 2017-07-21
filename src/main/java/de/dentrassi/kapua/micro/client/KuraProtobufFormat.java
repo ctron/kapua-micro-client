@@ -14,12 +14,12 @@ package de.dentrassi.kapua.micro.client;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.kapua.gateway.micro.client.kura.payload.KuraPayloadProto.KuraPayload;
-import org.eclipse.kapua.gateway.micro.client.kura.payload.KuraPayloadProto.KuraPayload.Builder;
-import org.eclipse.kapua.gateway.micro.client.kura.payload.KuraPayloadProto.KuraPayload.KuraMetric;
-import org.eclipse.kapua.gateway.micro.client.kura.payload.KuraPayloadProto.KuraPayload.KuraMetric.ValueType;
-
 import com.google.protobuf.ByteString;
+
+import de.dentrassi.kapua.micro.client.internal.kura.payload.KuraPayloadProto.KuraPayload;
+import de.dentrassi.kapua.micro.client.internal.kura.payload.KuraPayloadProto.KuraPayload.Builder;
+import de.dentrassi.kapua.micro.client.internal.kura.payload.KuraPayloadProto.KuraPayload.KuraMetric;
+import de.dentrassi.kapua.micro.client.internal.kura.payload.KuraPayloadProto.KuraPayload.KuraMetric.ValueType;
 
 public class KuraProtobufFormat implements PayloadFormat {
 
