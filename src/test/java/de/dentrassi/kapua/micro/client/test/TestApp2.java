@@ -11,16 +11,16 @@
  *******************************************************************************/
 package de.dentrassi.kapua.micro.client.test;
 
-import de.dentrassi.kapua.micro.client.BirthCertificateProvider;
 import de.dentrassi.kapua.micro.client.Handler;
-import de.dentrassi.kapua.micro.client.KuraNamespace;
-import de.dentrassi.kapua.micro.client.KuraProtobufFormat;
 import de.dentrassi.kapua.micro.client.MicroApplication;
 import de.dentrassi.kapua.micro.client.MicroClient;
-import de.dentrassi.kapua.micro.client.MqttTransportOptions;
-import de.dentrassi.kapua.micro.client.PahoTransport;
 import de.dentrassi.kapua.micro.client.Payload;
 import de.dentrassi.kapua.micro.client.Topic;
+import de.dentrassi.kapua.micro.client.format.KuraProtobufFormat;
+import de.dentrassi.kapua.micro.client.lifecycle.BirthCertificateProvider;
+import de.dentrassi.kapua.micro.client.namespace.KuraNamespace;
+import de.dentrassi.kapua.micro.client.transport.MqttTransportOptions;
+import de.dentrassi.kapua.micro.client.transport.PahoTransport;
 
 public class TestApp2 {
 

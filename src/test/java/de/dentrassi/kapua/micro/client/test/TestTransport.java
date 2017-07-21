@@ -12,14 +12,14 @@
 package de.dentrassi.kapua.micro.client.test;
 
 import de.dentrassi.kapua.micro.client.Handler;
-import de.dentrassi.kapua.micro.client.KuraProtobufFormat;
-import de.dentrassi.kapua.micro.client.Nothing;
-import de.dentrassi.kapua.micro.client.MqttTransportOptions;
-import de.dentrassi.kapua.micro.client.PahoTransport;
 import de.dentrassi.kapua.micro.client.Payload;
-import de.dentrassi.kapua.micro.client.Result;
-import de.dentrassi.kapua.micro.client.ResultHandler;
-import de.dentrassi.kapua.micro.client.TransportListener;
+import de.dentrassi.kapua.micro.client.format.KuraProtobufFormat;
+import de.dentrassi.kapua.micro.client.transport.MqttTransportOptions;
+import de.dentrassi.kapua.micro.client.transport.PahoTransport;
+import de.dentrassi.kapua.micro.client.transport.TransportListener;
+import de.dentrassi.kapua.micro.client.util.Nothing;
+import de.dentrassi.kapua.micro.client.util.Result;
+import de.dentrassi.kapua.micro.client.util.ResultHandler;
 
 public class TestTransport {
 

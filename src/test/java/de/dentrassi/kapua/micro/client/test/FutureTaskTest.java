@@ -14,8 +14,8 @@ package de.dentrassi.kapua.micro.client.test;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.dentrassi.kapua.micro.client.FutureTask;
-import de.dentrassi.kapua.micro.client.Result;
+import de.dentrassi.kapua.micro.client.util.FutureTask;
+import de.dentrassi.kapua.micro.client.util.Result;
 
 public class FutureTaskTest {
 

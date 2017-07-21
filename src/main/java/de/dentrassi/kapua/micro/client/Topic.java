@@ -11,6 +11,9 @@
  *******************************************************************************/
 package de.dentrassi.kapua.micro.client;
 
+/**
+ * An application Topic
+ */
 public class Topic {
 
     private final String topic;

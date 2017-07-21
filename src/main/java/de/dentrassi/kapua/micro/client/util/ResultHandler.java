@@ -9,19 +9,9 @@
  * Contributors:
  *     Red Hat Inc - initial API and implementation
  *******************************************************************************/
-package de.dentrassi.kapua.micro.client;
+package de.dentrassi.kapua.micro.client.util;
 
-import java.util.Map;
+public interface ResultHandler<T> {
 
-public final class Properties {
-
-    private Properties() {
-    }
-
-    public static void addWhenPresent(final Map<String, Object> values, final String propertyName, final String kuraAlias) {
-        final String value = System.getProperty(propertyName);
-        if (value != null) {
-            values.put(kuraAlias, value);
-        }
-    }
+    public void completed(Result<T> result);
 }

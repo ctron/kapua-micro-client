@@ -9,11 +9,13 @@
  * Contributors:
  *     Red Hat Inc - initial API and implementation
  *******************************************************************************/
-package de.dentrassi.kapua.micro.client;
+package de.dentrassi.kapua.micro.client.util;
 
-public interface Namespace {
+public interface Future<T> {
 
-    public String data(String applicationName, Topic topic);
+    public void handle(ResultHandler<T> handler);
 
-    public String birth();
+    public Result<T> get() throws InterruptedException;
+
+    public Result<T> get(long timeout) throws InterruptedException;
 }

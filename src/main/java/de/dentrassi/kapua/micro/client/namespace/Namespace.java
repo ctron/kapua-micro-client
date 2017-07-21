@@ -9,9 +9,13 @@
  * Contributors:
  *     Red Hat Inc - initial API and implementation
  *******************************************************************************/
-package de.dentrassi.kapua.micro.client;
+package de.dentrassi.kapua.micro.client.namespace;
 
-public interface TransportCreator<T extends Transport> {
+import de.dentrassi.kapua.micro.client.Topic;
 
-    public T createTransport(TransportListener listener) throws Exception;
+public interface Namespace {
+
+    public String data(String applicationName, Topic topic);
+
+    public String birth();
 }

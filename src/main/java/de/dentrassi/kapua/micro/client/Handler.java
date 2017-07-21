@@ -11,6 +11,9 @@
  *******************************************************************************/
 package de.dentrassi.kapua.micro.client;
 
+/**
+ * Application message handler
+ */
 public interface Handler {
 
     public void handleMessage(Payload payload);

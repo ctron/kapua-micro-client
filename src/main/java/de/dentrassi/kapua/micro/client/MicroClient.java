@@ -16,6 +16,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import de.dentrassi.kapua.micro.client.lifecycle.BirthCertificateProvider;
+import de.dentrassi.kapua.micro.client.namespace.Namespace;
+import de.dentrassi.kapua.micro.client.transport.Transport;
+import de.dentrassi.kapua.micro.client.transport.TransportCreator;
+import de.dentrassi.kapua.micro.client.transport.TransportListener;
+import de.dentrassi.kapua.micro.client.util.Future;
+import de.dentrassi.kapua.micro.client.util.Nothing;
+
+/**
+ * A client instance for communicating with Kapua
+ */
 public class MicroClient implements AutoCloseable {
 
     private final Namespace namespace;

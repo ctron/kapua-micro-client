@@ -9,13 +9,13 @@
  * Contributors:
  *     Red Hat Inc - initial API and implementation
  *******************************************************************************/
-package de.dentrassi.kapua.micro.client;
+package de.dentrassi.kapua.micro.client.format;
 
-public interface Future<T> {
+import de.dentrassi.kapua.micro.client.Payload;
 
-    public void handle(ResultHandler<T> handler);
+public interface PayloadFormat {
 
-    public Result<T> get() throws InterruptedException;
+    public byte[] encode(Payload payload);
 
-    public Result<T> get(long timeout) throws InterruptedException;
+    public Payload decode(byte[] buffer) throws Exception;
 }

@@ -9,10 +9,9 @@
  * Contributors:
  *     Red Hat Inc - initial API and implementation
  *******************************************************************************/
-package de.dentrassi.kapua.micro.client;
+package de.dentrassi.kapua.micro.client.util;
 
-public final class Nothing {
+public interface Supplier<T> {
 
-    private Nothing() {
-    }
+    public T get();
 }

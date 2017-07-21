@@ -9,11 +9,18 @@
  * Contributors:
  *     Red Hat Inc - initial API and implementation
  *******************************************************************************/
-package de.dentrassi.kapua.micro.client;
+package de.dentrassi.kapua.micro.client.transport;
 
-public interface TransportListener {
+import de.dentrassi.kapua.micro.client.Handler;
+import de.dentrassi.kapua.micro.client.Payload;
+import de.dentrassi.kapua.micro.client.util.Future;
+import de.dentrassi.kapua.micro.client.util.Nothing;
 
-    public void connected();
+public interface Transport extends AutoCloseable {
 
-    public void disconnected();
+    public Future<Nothing> publish(String topic, Payload payload);
+
+    public Future<Nothing> subscribe(String topic, Handler handler);
+
+    public Future<Nothing> unsubscribe(String topic);
 }

@@ -9,11 +9,9 @@
  * Contributors:
  *     Red Hat Inc - initial API and implementation
  *******************************************************************************/
-package de.dentrassi.kapua.micro.client;
+package de.dentrassi.kapua.micro.client.transport;
 
-public interface PayloadFormat {
+public interface TransportCreator<T extends Transport> {
 
-    public byte[] encode(Payload payload);
-
-    public Payload decode(byte[] buffer) throws Exception;
+    public T createTransport(TransportListener listener) throws Exception;
 }

@@ -9,7 +9,7 @@
  * Contributors:
  *     Red Hat Inc - initial API and implementation
  *******************************************************************************/
-package de.dentrassi.kapua.micro.client;
+package de.dentrassi.kapua.micro.client.transport;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,6 +24,14 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
+
+import de.dentrassi.kapua.micro.client.Handler;
+import de.dentrassi.kapua.micro.client.Payload;
+import de.dentrassi.kapua.micro.client.format.PayloadFormat;
+import de.dentrassi.kapua.micro.client.util.Future;
+import de.dentrassi.kapua.micro.client.util.FutureTask;
+import de.dentrassi.kapua.micro.client.util.Nothing;
+import de.dentrassi.kapua.micro.client.util.Supplier;
 
 public class PahoTransport implements Transport, AutoCloseable {
 

@@ -14,6 +14,13 @@ package de.dentrassi.kapua.micro.client;
 import java.util.HashSet;
 import java.util.Set;
 
+import de.dentrassi.kapua.micro.client.util.Future;
+import de.dentrassi.kapua.micro.client.util.FutureTask;
+import de.dentrassi.kapua.micro.client.util.Nothing;
+
+/**
+ * An application instance
+ */
 public class MicroApplication implements AutoCloseable {
 
     private final MicroClient client;

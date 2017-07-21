@@ -9,9 +9,11 @@
  * Contributors:
  *     Red Hat Inc - initial API and implementation
  *******************************************************************************/
-package de.dentrassi.kapua.micro.client;
+package de.dentrassi.kapua.micro.client.transport;
 
-public interface BirthCertificateProvider {
+public interface TransportListener {
 
-    public void provide(Payload.Builder payload);
+    public void connected();
+
+    public void disconnected();
 }

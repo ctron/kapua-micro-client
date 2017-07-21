@@ -9,12 +9,13 @@
  * Contributors:
  *     Red Hat Inc - initial API and implementation
  *******************************************************************************/
-package de.dentrassi.kapua.micro.client;
+package de.dentrassi.kapua.micro.client.lifecycle;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import de.dentrassi.kapua.micro.client.Payload.Builder;
+import de.dentrassi.kapua.micro.client.util.Properties;
 
 public final class BirthCertificateProviders {
 

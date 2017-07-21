@@ -9,9 +9,12 @@
  * Contributors:
  *     Red Hat Inc - initial API and implementation
  *******************************************************************************/
-package de.dentrassi.kapua.micro.client;
+package de.dentrassi.kapua.micro.client.namespace;
 
 import java.util.Objects;
+
+import de.dentrassi.kapua.micro.client.Topic;
+import de.dentrassi.kapua.micro.client.transport.MqttTransportOptions;
 
 public class KuraNamespace implements Namespace {
 

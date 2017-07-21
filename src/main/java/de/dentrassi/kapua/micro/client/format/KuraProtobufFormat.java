@@ -9,13 +9,14 @@
  * Contributors:
  *     Red Hat Inc - initial API and implementation
  *******************************************************************************/
-package de.dentrassi.kapua.micro.client;
+package de.dentrassi.kapua.micro.client.format;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import com.google.protobuf.ByteString;
 
+import de.dentrassi.kapua.micro.client.Payload;
 import de.dentrassi.kapua.micro.client.internal.kura.payload.KuraPayloadProto.KuraPayload;
 import de.dentrassi.kapua.micro.client.internal.kura.payload.KuraPayloadProto.KuraPayload.Builder;
 import de.dentrassi.kapua.micro.client.internal.kura.payload.KuraPayloadProto.KuraPayload.KuraMetric;
@@ -120,7 +121,10 @@ public class KuraProtobufFormat implements PayloadFormat {
             }
         }
 
-        return new Payload(payload.getTimestamp(), metrics);
+        return new Payload.Builder()
+                .from(payload.getTimestamp())
+                .metrics(metrics)
+                .build();
     }
 
 }

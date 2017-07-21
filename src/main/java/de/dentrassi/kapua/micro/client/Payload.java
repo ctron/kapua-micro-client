@@ -16,6 +16,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Application payload data
+ */
 public class Payload {
 
     public static class Builder {
