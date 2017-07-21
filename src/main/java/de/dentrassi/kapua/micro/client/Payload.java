@@ -53,6 +53,31 @@ public class Payload {
             return this;
         }
 
+        public Builder metric(final String key, final long value) {
+            this.metrics.put(key, value);
+            return this;
+        }
+
+        public Builder metric(final String key, final float value) {
+            this.metrics.put(key, value);
+            return this;
+        }
+
+        public Builder metric(final String key, final double value) {
+            this.metrics.put(key, value);
+            return this;
+        }
+
+        public Builder metric(final String key, final boolean value) {
+            this.metrics.put(key, value);
+            return this;
+        }
+
+        public Builder metric(final String key, final byte[] value) {
+            this.metrics.put(key, value);
+            return this;
+        }
+
         public Builder metrics(final Map<String, Object> values) {
             if (values != null) {
                 for (final Object value : values.values()) {
