@@ -1,0 +1,27 @@
+-classpath
+'/home/jreimann/.m2/repository/com/google/protobuf/protobuf-java/2.5.0/protobuf-java-2.5.0.jar:/home/jreimann/.m2/repository/org/eclipse/paho/org.eclipse.paho.client.mqttv3/1.0.2/org.eclipse.paho.client.mqttv3-1.0.2.jar'
+-encoding
+'UTF-8'
+-protected
+-sourcepath
+'/home/jreimann/git/kapua-micro-client.git/src/main/java:/home/jreimann/git/kapua-micro-client.git/target/generated-sources'
+-author
+-bottom
+'Copyright &#169; 2017. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'/home/jreimann/git/kapua-micro-client.git/target/site/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'Kapua Micro Client 0.1.0 API'
+-link
+'http://docs.oracle.com/javase/8/docs/api'
+-linkoffline
+'http://docs.oracle.com/javase/7/docs/api' '/home/jreimann/git/kapua-micro-client.git/target/javadoc-bundle-options'
+-linksource
+-use
+-version
+-windowtitle
+'Kapua Micro Client 0.1.0 API'
