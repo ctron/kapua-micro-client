@@ -1,4 +1,4 @@
-# Eclipse Kapua™ Micro Client SDK [![Build status](https://api.travis-ci.org/ctron/kapua-micro-client.svg)](https://travis-ci.org/ctron/kapua-micro-client) [![Maven Central](https://img.shields.io/maven-central/v/de.dentrassi.kapua/kapua-micro-client.svg "Maven Central Status")](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22de.dentrassi.kapua%22)
+# Eclipse Kapua™ Micro Client SDK [![Build status](https://api.travis-ci.org/ctron/kapua-micro-client.svg)](https://travis-ci.org/ctron/kapua-micro-client) [![Maven Central](https://img.shields.io/maven-central/v/de.dentrassi.kapua/kapua-micro-client.svg "Maven Central Status")](https://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22de.dentrassi.kapua%22%20AND%20a%3A%22kapua-micro-client%22)
 
 This project provides a minimal SDK for connecting to [Eclipse Kapua](https://eclipse.org/kapua) as a gateway.
 It is targeted to use only minimal dependencies and run on constrained devices and profiles (like the CLDC 8).
@@ -8,6 +8,10 @@ It is targeted to use only minimal dependencies and run on constrained devices a
 
 If you plan to run this in Java 8+ SE, then please use [ctron/kapua-gateway-client](https://github.com/ctron/kapua-gateway-client "ctron/kapua-gateway-client repository") instead. The main difference between this project and the `kapua-gateway-client` is, that this project only uses minal dependencies and Java 7 as a base. While the other project makes use of Java 8 to provide a nice API and a simple, modular, extensible architecture and implementation. But sometimes it may be necessary
 to ditch all the fun and concentrate on the most simple solution.
+
+Also see:
+ * [Project Information](https://ctron.github.io/kapua-micro-client/) 
+ * [API docs](https://ctron.github.io/kapua-micro-client/apidocs/) 
 
 ## How to use
 
