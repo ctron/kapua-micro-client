@@ -4,6 +4,7 @@ This project provides a minimal SDK for connecting to [Eclipse Kapua](https://ec
 It is targeted to use only minimal dependencies and run on constrained devices and profiles (like the CLDC 8).
 
 **Note:** This is not part of the Eclipse Kapua project.
+
 **Note:** This is a work in progress and should not be considered production ready.
 
 If you plan to run this in Java 8+ SE, then please use [ctron/kapua-gateway-client](https://github.com/ctron/kapua-gateway-client "ctron/kapua-gateway-client repository") instead. The main difference between this project and the `kapua-gateway-client` is, that this project only uses minal dependencies and Java 7 as a base. While the other project makes use of Java 8 to provide a nice API and a simple, modular, extensible architecture and implementation. But sometimes it may be necessary
