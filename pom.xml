@@ -281,7 +281,7 @@
 					<links>
 						<link>http://docs.oracle.com/javase/8/docs/api</link>
 					</links>
-					<excludePackageNames>org.eclipse.kapua.gateway.client.kura.payload:de.dentrassi.kapua.smarthome</excludePackageNames>
+					<excludePackageNames>de.dentrassi.kapua.micro.client.internal.kura.payload</excludePackageNames>
 				</configuration>
 				<reportSets>
 					<reportSet>

@@ -10,6 +10,6 @@ This is a short note on how to perform a release.
 
     git checkout <tag>
     # update site.xml
-    mvn site:site site:stage
+    mvn site -Ppages
     # cp over to gh-pages
     # git rm/add/commit/push
